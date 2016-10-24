@@ -27,6 +27,7 @@ public class CrimeLab {
             Crime crime = new Crime();
             crime.setTitle("Crime #" + i);
             crime.setSolved(i % 2 == 0);
+            crime.setPosition(i);
             mCrimes.add(crime);
         }
     }
@@ -42,5 +43,14 @@ public class CrimeLab {
             }
         }
         return null;
+    }
+
+    public int getCrimeIndex(UUID id) {
+        Crime crime = getCrime(id);
+        if (crime != null) {
+            return crime.getPosition();
+        } else {
+            return 0;
+        }
     }
 }

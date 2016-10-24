@@ -1,6 +1,8 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +16,8 @@ import android.widget.EditText;
 
 import java.util.UUID;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by jeffrey on 10/17/16.
  */
@@ -24,12 +28,22 @@ public class CrimeFragment extends android.support.v4.app.Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
+    private static String POSITION_KEY = "position";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+
+        Intent data = new Intent();
+        data.putExtra(POSITION_KEY, mCrime.getPosition());
+        getActivity().setResult(Activity.RESULT_OK, data);
+    }
+
+    public static int getCrimePosition(Intent intent) {
+        return intent.getIntExtra(POSITION_KEY, 0);
     }
 
     @Override
