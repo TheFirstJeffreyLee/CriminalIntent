@@ -15,6 +15,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,10 +28,13 @@ import java.util.UUID;
 public class CrimeFragment extends android.support.v4.app.Fragment {
     public static final String ARG_CRIME_ID = "crime_id";
     public static final String DIALOG_DATE = "DialogDate";
+    public static final String DIALOG_TIME = "DialogTime";
     public static final int REQUEST_DATE = 0;
+    public static final int REQUEST_TIME = 1;
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
+    private Button mTimeButton;
     private CheckBox mSolvedCheckBox;
 
     @Override
@@ -62,7 +68,6 @@ public class CrimeFragment extends android.support.v4.app.Fragment {
         });
 
         mDateButton = (Button) v.findViewById(R.id.crime_date);
-        updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +77,19 @@ public class CrimeFragment extends android.support.v4.app.Fragment {
                 dialog.show(manager, DIALOG_DATE);
             }
         });
+
+        mTimeButton = (Button) v.findViewById(R.id.crime_time);
+        mTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+                dialog.show(manager, DIALOG_TIME);
+            }
+        });
+
+        updateDate();
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());
@@ -95,11 +113,20 @@ public class CrimeFragment extends android.support.v4.app.Fragment {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
             updateDate();
+        } else if (requestCode == REQUEST_TIME) {
+            Date date = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            mCrime.setDate(date);
+            updateDate();
         }
     }
 
     private void updateDate() {
-        mDateButton.setText(mCrime.getDate().toString());
+        DateFormat df_date = new SimpleDateFormat("MMM d, yyyy");
+        DateFormat df_time = new SimpleDateFormat("h:m a");
+        String now_date = df_date.format(mCrime.getDate());
+        String now_time = df_time.format(mCrime.getDate());
+        mDateButton.setText(now_date);
+        mTimeButton.setText(now_time);
     }
 
     public static CrimeFragment newInstance(UUID crimeId) {
