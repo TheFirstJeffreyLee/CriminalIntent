@@ -21,7 +21,7 @@ import java.util.GregorianCalendar;
  * Created by jlee on 10/25/16.
  */
 
-public class DatePickerFragment extends DialogFragment {
+public class DatePickerFragment extends android.support.v4.app.Fragment {
     public static final String ARG_DATE = "date";
     public static final String EXTRA_DATE = "com.bignerdranch.android.criminalintent.date";
     private DatePicker mDatePicker;
@@ -37,13 +37,9 @@ public class DatePickerFragment extends DialogFragment {
     }
 
     private void sendResult(int resultCode, Date date) {
-        if (getTargetFragment() == null) {
-            return;
-        }
-
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);
-        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
+        getActivity().setResult(Activity.RESULT_OK, intent);
     }
 
     @Override
@@ -60,7 +56,7 @@ public class DatePickerFragment extends DialogFragment {
 
         mDatePicker = (DatePicker) v.findViewById(R.id.dialog_date_date_picker);
         mDatePicker.init(year, month, day, null);
-        getDialog().setTitle(R.string.date_picker_title);
+
 
         mOkButton = (Button) v.findViewById(R.id.dialog_date_ok_button);
         mOkButton.setText("OK");
@@ -71,8 +67,8 @@ public class DatePickerFragment extends DialogFragment {
                 int month = mDatePicker.getMonth();
                 int day = mDatePicker.getDayOfMonth();
                 Date date = new GregorianCalendar(year, month, day).getTime();
-                getDialog().dismiss();
                 sendResult(Activity.RESULT_OK, date);
+                getActivity().onBackPressed();
             }
         });
 
