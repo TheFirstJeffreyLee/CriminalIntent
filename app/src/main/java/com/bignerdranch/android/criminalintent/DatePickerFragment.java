@@ -60,8 +60,10 @@ public class DatePickerFragment extends DialogFragment {
 
         mDatePicker = (DatePicker) v.findViewById(R.id.dialog_date_date_picker);
         mDatePicker.init(year, month, day, null);
+        getDialog().setTitle(R.string.date_picker_title);
 
         mOkButton = (Button) v.findViewById(R.id.dialog_date_ok_button);
+        mOkButton.setText("OK");
         mOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,43 +71,11 @@ public class DatePickerFragment extends DialogFragment {
                 int month = mDatePicker.getMonth();
                 int day = mDatePicker.getDayOfMonth();
                 Date date = new GregorianCalendar(year, month, day).getTime();
+                getDialog().dismiss();
                 sendResult(Activity.RESULT_OK, date);
             }
         });
 
         return v;
     }
-
-//    @Override
-//    public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_date, null);
-//
-//        Date date = (Date) getArguments().getSerializable(ARG_DATE);
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(date);
-//        int year = calendar.get(Calendar.YEAR);
-//        int month = calendar.get(Calendar.MONTH);
-//        int day = calendar.get(Calendar.DAY_OF_MONTH);
-//
-//        mDatePicker = (DatePicker) v.findViewById(R.id.dialog_date_date_picker);
-//        mDatePicker.init(year, month, day, null);
-//
-//        return new android.support.v7.app.AlertDialog.Builder(getActivity())
-//                .setView(v)
-//                .setTitle(R.string.date_picker_title)
-//                .setPositiveButton(android.R.string.ok,
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                int year = mDatePicker.getYear();
-//                                int month = mDatePicker.getMonth();
-//                                int day = mDatePicker.getDayOfMonth();
-//                                Date date = new GregorianCalendar(year, month, day).getTime();
-//                                sendResult(Activity.RESULT_OK, date);
-//                            }
-//                        }
-//                )
-//                .create();
-//    }
 }
