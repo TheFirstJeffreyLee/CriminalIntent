@@ -24,6 +24,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class CrimeFragment extends android.support.v4.app.Fragment {
     public static final String ARG_CRIME_ID = "crime_id";
+    public static final String ARG_CRIME_POSITION = "crime_position";
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
@@ -34,11 +35,12 @@ public class CrimeFragment extends android.support.v4.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        int position = getArguments().getInt(ARG_CRIME_POSITION);
 
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
 
         Intent data = new Intent();
-        data.putExtra(POSITION_KEY, mCrime.getPosition());
+        data.putExtra(POSITION_KEY, position);
         getActivity().setResult(Activity.RESULT_OK, data);
     }
 
@@ -85,9 +87,10 @@ public class CrimeFragment extends android.support.v4.app.Fragment {
         return v;
     }
 
-    public static CrimeFragment newInstance(UUID crimeId) {
+    public static CrimeFragment newInstance(UUID crimeId, int position) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_CRIME_ID, crimeId);
+        args.putInt(ARG_CRIME_POSITION, position);
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(args);
         return fragment;
