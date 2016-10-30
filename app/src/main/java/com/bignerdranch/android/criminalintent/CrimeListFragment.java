@@ -66,8 +66,10 @@ public class CrimeListFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.menu_item_new_crime:
                 Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+                CrimeLab crime_lab = CrimeLab.get(getActivity());
+                crime_lab.addCrime(crime);
+                int position = crime_lab.crimeCount();
+                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId(), position);
                 startActivity(intent);
                 return true;
             case R.id.menu_item_show_subtitle:
@@ -143,7 +145,8 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+            int position = getAdapterPosition();
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId(), position);
             startActivity(intent);
         }
     }

@@ -25,8 +25,16 @@ public class CrimeLab {
         mCrimes.add(c);
     }
 
+    public void removeCrime(int position) {
+        mCrimes.remove(position);
+    }
+
     private CrimeLab(Context context) {
         mCrimes = new ArrayList<>();
+    }
+
+    public int crimeCount() {
+        return mCrimes.size() - 1;
     }
 
     public List<Crime> getCrimes() {
